@@ -11,22 +11,22 @@
 #   WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 #   License for the specific language governing permissions and limitations
 #   under the License.
-"""Script allowing a new user to reset their password securely.  
+"""Script allowing a new user to reset their password securely.
 
-Th script performs the following  actions:
+The script performs the following  actions:
     - Resets the user's OpenStack password to a random string
     - Add the user, new password, and PIN to the Setpass service
     - Generates a Setpass link the user will visit to reset their password
-    - Send the link via email to the user 
+    - Send the link via email to the user
 
 Usage:
     python reset-password.py <username> <PIN>
 
 The PIN must be a 4-digit number and the user must provide it to successfully
-set their new password. 
+set their new password.
 
 For more information on the Setpass service see:
-https://github.com/CCI-MOC/setpass 
+https://github.com/CCI-MOC/setpass
 """
 import sys
 import re
@@ -36,7 +36,7 @@ from keystoneclient.v3 import client
 from keystoneauth1.identity import v3
 from keystoneauth1 import session
 
-#local import
+# local import
 from message import TemplateMessage
 from setpass import SetpassClient, random_password
 from config import set_config_file
@@ -53,10 +53,14 @@ def validate_pin(pin):
 
 if __name__ == "__main__":
     
-    parser = argparse.ArgumentParser(description="Reset an existing user's password")
-    parser.add_argument('username',help='username of the user whose password you wish to reset')
-    parser.add_argument('PIN', type=validate_pin, help='Four-digit PIN provided by the user')
-    parser.add_argument('-c', '--config', 
+    parser = argparse.ArgumentParser(
+        description="Reset an existing user's password")
+    parser.add_argument(
+        'username',
+        help='username of the user whose password you wish to reset')
+    parser.add_argument('PIN', type=validate_pin,
+                        help='Four-digit PIN provided by the user')
+    parser.add_argument('-c', '--config',
                         help='Specify configuration file.')
 
     args = parser.parse_args()
@@ -77,9 +81,9 @@ if __name__ == "__main__":
     
     auth = v3.Password(auth_url=auth_url,
                        username=admin_user,
-                       user_domain_id = 'default',
-                       project_name = admin_project,
-                       project_domain_id = 'default',
+                       user_domain_id='default',
+                       project_name=admin_project,
+                       project_domain_id='default',
                        password=admin_pwd)
     sess = session.Session(auth=auth)
 
@@ -100,11 +104,10 @@ if __name__ == "__main__":
    
     url = setpass.get_url(token)
     email_config = dict(config.items('password_email'))
-    email = TemplateMessage(email=args.username, fullname=args.username, setpass_token_url=url, **email_config)
+    email = TemplateMessage(email=args.username, fullname=args.username,
+                            setpass_token_url=url, **email_config)
     try:
         email.send()
     except:
         email.dump_to_file(config)
         raise
-
-   
