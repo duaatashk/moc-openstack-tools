@@ -109,6 +109,7 @@ if __name__ == "__main__":
     
     email = TemplateMessage(email=args.username, fullname=args.username,
                             setpass_token_url=url, **email_config)
+
     try:
         email.send()
     except:
