@@ -34,8 +34,10 @@ from googleapiclient.schema import Schemas
 
 
 class Spreadsheet(Resource):
-    """ A wrapper around the Google API spreadsheet resource constructs a
-spreadsheet API instance and creates user-friendly attributes and functions.
+    """ A wrapper around the Google API spreadsheet resource
+
+    Constructs a spreadsheet API instance and creates user-friendly
+    attributes and functions.
     """
     def __init__(self, keyfile, sheet_id):
         
@@ -180,9 +182,7 @@ spreadsheet API instance and creates user-friendly attributes and functions.
         """
         cell_range = target + "!" + first_table_cell
         body = {"values": rows}
-        req = self.spreadsheets().values().append(spreadsheetId=self._id,
-                                                  range=cell_range,
-                                                  valueInputOption='RAW',
-                                                  insertDataOption='INSERT_ROWS', # noqa
-                                                  body=body)
+        req = self.spreadsheets().values().append(
+            spreadsheetId=self._id, range=cell_range, valueInputOption='RAW',
+            insertDataOption='INSERT_ROWS', body=body)
         return req.execute()

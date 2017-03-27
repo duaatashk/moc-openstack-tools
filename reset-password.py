@@ -53,14 +53,14 @@ def validate_pin(pin):
 
 if __name__ == "__main__":
     
-    parser = argparse.ArgumentParser(
-        description="Reset an existing user's password")
-    parser.add_argument(
-        'username',
-        help='username of the user whose password you wish to reset')
-    parser.add_argument('PIN', type=validate_pin,
+    parser = argparse.ArgumentParser(description="Reset user's password")
+    parser.add_argument('username',
+                        help='of the user whose password you wish to reset')
+    parser.add_argument('PIN',
+                        type=validate_pin,
                         help='Four-digit PIN provided by the user')
-    parser.add_argument('-c', '--config',
+    parser.add_argument('-c',
+                        '--config',
                         help='Specify configuration file.')
 
     args = parser.parse_args()
