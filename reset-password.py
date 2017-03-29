@@ -115,3 +115,5 @@ if __name__ == "__main__":
     except:
         email.dump_to_file(config)
         raise
+        
+    print "Password successfully reset for user {}".format(user.name)
