@@ -42,6 +42,7 @@ from keystoneauth1 import session
 # local
 import message
 import spreadsheet
+from moc_utils import get_absolute_path
 from quotas import QuotaManager
 from setpass import SetpassClient, random_password
 from config import set_config_file
@@ -229,7 +230,7 @@ def parse_rows(rows):
         # ignore row 0 (the header row) and blank rows
         if (idx == 0) or (entry == []):
             continue
-        elif (entry[0] != 'approved') or (entry[1] == ''):
+        elif (entry[0].lower().strip() != 'approved') or (entry[1] == ''):
             # Don't process requests that haven't gone through the
             # approval/notification process yet
             # entry[0] is Approved, entry[1] is Helpdesk Notified
@@ -352,9 +353,11 @@ if __name__ == "__main__":
                        project_name=admin_project)
     session = session.Session(auth=auth)
     
+
     openstack = Openstack(session=session, nova_version=nova_version,
                           setpass_url=setpass_url)
-    auth_file = config.get("excelsheet", "auth_file")
+    auth_file = get_absolute_path(config.get("excelsheet", 
+                                             "auth_file"))
     worksheet_key = config.get("excelsheet", "worksheet_key")
     quotas = dict(config.items('quotas'))
     email_defaults = dict(config.items('email_defaults'))
@@ -372,6 +375,10 @@ if __name__ == "__main__":
     ks_projects = openstack.keystone.projects.list()
     ks_member_role = openstack.keystone.roles.find(name='_member_')
     
+    if not content:
+        # FIXME: make a better exception
+        raise Exception('No approved requests found.') 
+
     for project in content:
         # what we get back here is a keystone project, or None
         ks_project = exists_in_keystone(content[project], ks_projects)

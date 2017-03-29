@@ -29,6 +29,7 @@ from keystoneauth1.identity import v3
 from keystoneauth1 import session
 
 from config import set_config_file
+from moc_utils import get_absolute_path
 from quotas import QuotaManager
 from message import TemplateMessage
 import spreadsheet
@@ -56,7 +57,7 @@ def parse_rows(rows):
         if (idx == 0) or (entry == []):
             continue
         # skip rows that have not been through approval/notification
-        elif (entry[0] != 'approved') or (entry[1] == ''):
+        elif (entry[0].lower().strip() != 'approved') or (entry[1] == ''):
             # entry[0] is Approved
             # entry[1] is Helpdesk Notified
             continue
@@ -73,9 +74,11 @@ def parse_rows(rows):
                       'cores': entry[11],
                       'ram': entry[12],
                       'floatingip': entry[13],
-                      'volumes': entry[14],
-                      'snapshots': entry[15],
-                      'gigabytes': entry[16]}
+                      'network': entry[14],
+                      'port': entry[15],
+                      'volumes': entry[16],
+                      'snapshots': entry[17],
+                      'gigabytes': entry[18]}
             
             unchanged_quotas = [q for q in quotas if quotas[q] == '']
             for quota_name in unchanged_quotas:
@@ -91,7 +94,7 @@ def parse_rows(rows):
 
             project['quotas'] = quotas
 
-            # entry[17] is Comments - required field
+            # entry[19] is Comments - required field
             project['row'] = idx
 
             project_list.append(project)
@@ -153,7 +156,7 @@ if __name__ == "__main__":
     admin_project = config.get('auth', 'admin_project')
     auth_url = config.get('auth', 'auth_url')
     nova_version = config.get('nova', 'version')
-    quota_auth_file = config.get('quota_sheet', 'auth_file')
+    quota_auth_file = get_absolute_path(config.get('quota_sheet', 'auth_file'))
     quota_worksheet_key = config.get('quota_sheet', 'worksheet_key')
     quota_template = config.get('quota_email', 'template')
 
@@ -174,7 +177,13 @@ if __name__ == "__main__":
     rows = sheet.get_all_rows("Form Responses 1")
     project_list = parse_rows(rows)
     bad_rows = []
-    
+    copy_index = []
+
+    if not project_list:
+        # FIXME: make a better exception for this later
+        raise Exception('No approved quota requests found.')
+
+ 
     # NOTE: 'project' is the project data from Google Sheets
     # and 'ks_project' is the matching project resource from Keystone
     for project in project_list:
@@ -217,9 +226,18 @@ if __name__ == "__main__":
                               quota_list=quota_list,
                               **quota_cfg)
         msg.send()
+        copy_index.append(project['row'])
         print "Successfully updated quotas for project {}".format(
               ks_project.name)
 
+    # FIXME: code is duplicated from addusers.py, centralize it
+    if copy_index:
+        copy_rows = [r for r in rows if rows.index(r) in copy_index]
+        sheet.append_rows(copy_rows, target="Processed Requests")
+        result = sheet.delete_rows(copy_index, 'Form Responses 1')
+    else:
+        print "WARNING: No spreadsheet rows were copied."
+    
     if bad_rows:
         print "WARNING: The following rows were not processed: {}".format(
               bad_rows)
