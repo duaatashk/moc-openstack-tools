@@ -12,6 +12,7 @@
 #   License for the specific language governing permissions and limitations
 #   under the License.
 """Add new users and projects to OpenStack using Google Sheets data
+
 For each new user definition the script will:
     - Create the user's project if it doesn't exist
     - Modify the project's quotas according to quotas defined in settings.ini
@@ -19,12 +20,15 @@ For each new user definition the script will:
     - Add the user, password, and PIN to the Setpass service
     - Generates a Setpass link the user will visit to reset their password
     - Send a welcome email and a password link email to the new user
+
 Once all users have been processed, the script will:
     - Send a single email subscribing all new users to a mailing list
     - Move the succesfully created users to another worksheet in Google Sheets
     - Print information about any users skipped due to missing/invalid data
+
 For more information on the Setpass service see:
 https://github.com/CCI-MOC/setpass
+
 Usage:
     python addusers.py
 """
@@ -134,6 +138,7 @@ class Openstack:
 
     def create_user(self, user, project):
         """Create a new OpenStack user from an addusers.User
+        
         This function assumes you have already verfied the user doesn't exist.
         """
         print "Creating user {}".format(user.name)
@@ -145,8 +150,6 @@ class Openstack:
                                              domain='default',
                                              description=fullname)
         
-        # FIXME: don't load config every time
-        # to config file loading
         setpass_token = self.setpass.get_token(ks_user.id, password, user.pin)
         password_url = self.setpass.get_url(setpass_token)
 
@@ -199,8 +202,8 @@ def validate_email(uname):
 
 
 def exists_in_keystone(check_thing, keystone_things):
-    """Check that the new user or project name doesn't conflict with an
-    existing project.
+    """Check for user or project name conflicts.
+
     new_thing should be an addusers.User or addusers.Project
     keystone_things should be a list of Keystone user or project resources
     """
@@ -214,11 +217,10 @@ def exists_in_keystone(check_thing, keystone_things):
 
 
 def parse_rows(rows):
-    """Parse new user/project data from the spreadsheet into User and
-    Project classes.
+    """Parse spreadsheet user/project data into User and Project classes
     
     Expects 'rows' to include all rows, with row 0 being the header row
-    Returns a dictionary of projects keyed by project name,  and a list
+    Returns a dictionary of projects keyed by project name, and a list
     of rows that were not blank but failed to parse correctly.
     """
     projects = {}
@@ -272,16 +274,16 @@ def parse_rows(rows):
                 projects[project_name].users.append(user)
             
             elif entry[14] in projects:
-                    # FIXME:
-                    # This should probably raise an error of some sort.  It
-                    # covers 2 weird edge cases, either:
-                    #   a) the project exists, another user from this batch
-                    #      asked to be added to it
-                    #   b) project doesn't exist, but another user from this
-                    #      batch requested a new project with this name.
-                    # For now, while we get stuff working, just assume they are
-                    # the same project.
-                    projects[entry[14]].users.append(user)
+                # FIXME:
+                # This should probably raise an error of some sort.  It
+                # covers 2 weird edge cases, either:
+                #   a) the project exists, another user from this batch
+                #      asked to be added to it
+                #   b) project doesn't exist, but another user from this
+                #      batch requested a new project with this name.
+                # For now, while we get stuff working, just assume they are
+                # the same project.
+                projects[entry[14]].users.append(user)
 
             else:
                 # a new project was requested - info in entry[14] to entry[16]
@@ -403,13 +405,13 @@ if __name__ == "__main__":
             ks_user = exists_in_keystone(user, ks_users)
             try:
                 if user.is_new:
-                        if ks_user:
-                            raise ItemExistsError('User', user.name)
-                        new_ks_user = openstack.create_user(user, ks_project)
-                        openstack.grant_role(auth_url, ks_project.id,
-                                             new_ks_user.id, ks_member_role.id)
-                        ks_users.append(new_ks_user)
-                        subscribe_emails.append(user.email)
+                    if ks_user:
+                        raise ItemExistsError('User', user.name)
+                    new_ks_user = openstack.create_user(user, ks_project)
+                    openstack.grant_role(auth_url, ks_project.id,
+                                         new_ks_user.id, ks_member_role.id)
+                    ks_users.append(new_ks_user)
+                    subscribe_emails.append(user.email)
                 elif not ks_user:
                     if user.is_requestor:
                         raise ItemNotFoundError('User', user.name)
