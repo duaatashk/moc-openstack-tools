@@ -353,10 +353,9 @@ if __name__ == "__main__":
                        project_name=admin_project)
     session = session.Session(auth=auth)
     
-
     openstack = Openstack(session=session, nova_version=nova_version,
                           setpass_url=setpass_url)
-    auth_file = get_absolute_path(config.get("excelsheet", 
+    auth_file = get_absolute_path(config.get("excelsheet",
                                              "auth_file"))
     worksheet_key = config.get("excelsheet", "worksheet_key")
     quotas = dict(config.items('quotas'))
@@ -377,7 +376,7 @@ if __name__ == "__main__":
     
     if not content:
         # FIXME: make a better exception
-        raise Exception('No approved requests found.') 
+        raise Exception('No approved requests found.')
 
     for project in content:
         # what we get back here is a keystone project, or None
