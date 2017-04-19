@@ -128,7 +128,7 @@ def notify_helpdesk(template, sender, receiver, **request_info):
 
 
 def reminder(template, sender, receiver, **request_info):
-    """Send a reminder email about an application waiting for approval 
+    """Send a reminder email about an application waiting for approval
     for more than 24 hours
     """
     subject = "Application Waiting for Approval"
@@ -215,9 +215,9 @@ def check_requests(request_type, auth_file, worksheet_key):
             if args.log:
                 log_request(args.log, timestamp, request_info['user_email'])
 
-        elif (row[0] == '') and (datetime.now() >= dateparser.parse(row[2]) + 
+        elif (row[0] == '') and (datetime.now() >= dateparser.parse(row[2]) +
                                  timedelta(hours=24)):
-            # send reminder about rows that have been waiting for approval 
+            # send reminder about rows that have been waiting for approval
             # for more than 24 hours
             request_info = parse_function(row)
             reminder(template=reminder_template,
@@ -256,7 +256,7 @@ if __name__ == '__main__':
     helpdesk_email = config.get('helpdesk', 'email')
     helpdesk_template = get_absolute_path(config.get('helpdesk', 'template'))
     reminder_email = config.get('reminder', 'email')
-    reminder_template = get_absolute_path(config.get('reminder', template'))
+    reminder_template = get_absolute_path(config.get('reminder', 'template'))
     quota_auth_file = get_absolute_path(config.get('quota_sheet', 'auth_file'))
     quota_worksheet_key = config.get('quota_sheet', 'worksheet_key')
  
