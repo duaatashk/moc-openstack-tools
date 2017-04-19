@@ -127,12 +127,13 @@ def notify_helpdesk(template, sender, receiver, **request_info):
     msg.send()
 
 
-def reminder(template, sender, receiver, **request_info):
+def reminder(template, sender, receiver, request_type, **request_info):
     """Send a reminder email about an application waiting for approval
     for more than 24 hours
     """
     subject = "Application Waiting for Approval"
-    msg = TemplateMessage(template=template, sender=sender, email=receiver,
+    msg = TemplateMessage(template=template, request_type=request_type, 
+                          sender=sender, email=receiver,
                           subject=subject, **request_info)
     msg.send()
 
