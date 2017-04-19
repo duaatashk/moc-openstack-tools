@@ -224,6 +224,7 @@ def check_requests(request_type, auth_file, worksheet_key):
             reminder(template=reminder_template,
                      sender=reminder_email,
                      receiver=reminder_email,
+                     request_type=request_type,
                      **request_info)
 
         else:
