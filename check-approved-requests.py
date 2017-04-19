@@ -212,7 +212,7 @@ def check_requests(request_type, auth_file, worksheet_key):
                 log_request(args.log, timestamp, request_info['user_email'])
 
         elif (row[0] == '') and (datetime.now() >= dateparser.parse(row[2]) + timedelta(hours=24)):
-            # process rows that has been waiting for approval for more than 24 hours
+            # send reminder about rows that has been waiting for approval for more than 24 hours
             request_info = parse_function(row)
             reminder(template=reminder_template,
                      sender=reminder_email,
