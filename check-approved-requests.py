@@ -126,12 +126,16 @@ def notify_helpdesk(template, sender, receiver, **request_info):
                           subject=subject, **request_info)
     msg.send()
 
+
 def reminder(template, sender, receiver, **request_info):
-    """Send a reminder email about an application waiting for approval for more than 24 hours"""
+    """Send a reminder email about an application waiting for approval 
+    for more than 24 hours
+    """
     subject = "Application Waiting for Approval"
     msg = TemplateMessage(template=template, sender=sender, email=receiver,
                           subject=subject, **request_info)
     msg.send()
+
 
 def timestamp_spreadsheet(sheet, time, processed_rows):
     """Mark the given rows as notified in the Google Sheet"""
@@ -211,8 +215,10 @@ def check_requests(request_type, auth_file, worksheet_key):
             if args.log:
                 log_request(args.log, timestamp, request_info['user_email'])
 
-        elif (row[0] == '') and (datetime.now() >= dateparser.parse(row[2]) + timedelta(hours=24)):
-            # send reminder about rows that has been waiting for approval for more than 24 hours
+        elif (row[0] == '') and (datetime.now() >= dateparser.parse(row[2]) + 
+                                 timedelta(hours=24)):
+            # send reminder about rows that have been waiting for approval 
+            # for more than 24 hours
             request_info = parse_function(row)
             reminder(template=reminder_template,
                      sender=reminder_email,
