@@ -132,7 +132,7 @@ def reminder(template, sender, receiver, request_type, **request_info):
     for more than 24 hours
     """
     subject = "Application Waiting for Approval"
-    msg = TemplateMessage(template=template, request_type=request_type, 
+    msg = TemplateMessage(template=template, request_type=request_type,
                           sender=sender, email=receiver,
                           subject=subject, **request_info)
     msg.send()
