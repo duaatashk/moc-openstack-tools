@@ -39,7 +39,8 @@ def parse_user_row(cells):
     user_info = {'user_name': email,
                  'user_email': email,
                  'first_name': cells[4],
-                 'last_name': cells[5]}
+                 'last_name': cells[5],
+                 'project': cells[14]}
     
     comment = 'User requested the following access:'.format(**user_info)
     
