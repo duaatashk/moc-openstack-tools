@@ -39,8 +39,7 @@ def parse_user_row(cells):
     user_info = {'user_name': email,
                  'user_email': email,
                  'first_name': cells[4],
-                 'last_name': cells[5],
-                 'project': cells[14]}
+                 'last_name': cells[5]}
     
     comment = 'User requested the following access:'.format(**user_info)
     
@@ -53,6 +52,7 @@ def parse_user_row(cells):
     if cells[14] != '':
         req_type = 'new Openstack project'
         comment += REQUEST.format(req=req_type, detail=cells[14])
+        user_info['project'] = cells[14]
 
         try:
             user_list = cells[16]
@@ -68,6 +68,7 @@ def parse_user_row(cells):
     elif cells[17] != '':
         req_type = 'access to existing OpenStack project'
         comment += REQUEST.format(req=req_type, detail=cells[17])
+        user_info['project'] = cells[17]
         
     user_info['comment'] = comment
     return user_info
