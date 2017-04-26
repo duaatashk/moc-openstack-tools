@@ -17,7 +17,7 @@ import string
 import smtplib
 from email.mime.text import MIMEText
 from moc_utils import get_absolute_path
-from moc_exceptions import BadEmailRecipient
+from .moc_exceptions import BadEmailRecipient
 
 '''
 class BadEmailRecipient(Exception):
