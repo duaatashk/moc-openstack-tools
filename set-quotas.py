@@ -33,7 +33,7 @@ from moc_utils import get_absolute_path, select_rows
 from quotas import QuotaManager
 from message import TemplateMessage
 import spreadsheet
-from exception import ProjectNotFoundError
+from moc_exception import ProjectNotFoundError
 
 '''
 class ProjectNotFoundError(Exception):

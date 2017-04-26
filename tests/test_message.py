@@ -11,7 +11,7 @@ PROJECT_DIR = os.path.abspath(os.path.join(TEST_DIR, os.pardir))
 sys.path.insert(0, PROJECT_DIR)
 
 from message import Message, TemplateMessage
-from exceptions import BadEmailRecipient
+from moc_exceptions import BadEmailRecipient
 
 
 def test_template():
