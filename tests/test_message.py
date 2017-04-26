@@ -12,6 +12,7 @@ sys.path.insert(0, PROJECT_DIR)
 
 from message import Message, TemplateMessage
 
+
 def test_template():
     """Test whether template messages are filled in correctly"""
     
