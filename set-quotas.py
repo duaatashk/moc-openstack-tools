@@ -33,14 +33,15 @@ from moc_utils import get_absolute_path, select_rows
 from quotas import QuotaManager
 from message import TemplateMessage
 import spreadsheet
+from exception import ProjectNotFoundError
 
-
+"""
 class ProjectNotFoundError(Exception):
     """The specified project does not exist"""
     def __init__(self, project_name):
         message = 'Cannot find project: {}'.format(project_name)
         super(ProjectNotFoundError, self).__init__(message)
-
+"""
 
 def parse_rows(rows, select_project=None):
     """Parse quota update data from the spreadsheet into a dictionary

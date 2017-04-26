@@ -16,6 +16,7 @@ class ItemNotFoundError(Exception):
                                                              item_name)
         super(ItemNotFoundError, self).__init__(msg)
 
+
 class BadEmailRecipient(Exception):
     """If sending failed to one or more recipients, but not all of them."""
     def __init__(self, rdict, subject):
@@ -23,6 +24,7 @@ class BadEmailRecipient(Exception):
         self.rejected = rdict
         self.message = ("Message '{0}' could not be sent to one or more "
                         "recipients.").format(subject)
+
 
 class ProjectNotFoundError(Exception):
     """The specified project does not exist"""
