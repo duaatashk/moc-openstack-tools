@@ -48,7 +48,8 @@ from setpass import SetpassClient, random_password
 from config import set_config_file
 from exceptions import InvalidEmailError, ItemExistsError, ItemNotFoundError
 
-""" class InvalidEmailError(Exception):
+'''
+ class InvalidEmailError(Exception):
     """User's email address does not pass basic format validation"""
 
 
@@ -65,7 +66,7 @@ class ItemNotFoundError(Exception):
         msg = "No {} found in Keystone with name: {}".format(item_type,
                                                              item_name)
         super(ItemNotFoundError, self).__init__(msg)
-"""
+'''
 
 
 class User(object):
