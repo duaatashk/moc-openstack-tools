@@ -11,7 +11,8 @@ PROJECT_DIR = os.path.abspath(os.path.join(TEST_DIR, os.pardir))
 sys.path.insert(0, PROJECT_DIR)
 
 from message import Message, TemplateMessage
-import exceptions
+from exceptions import BadEmailRecipient
+
 
 def test_template():
     """Test whether template messages are filled in correctly"""
