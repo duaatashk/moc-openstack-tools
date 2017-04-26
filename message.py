@@ -17,7 +17,7 @@ import string
 import smtplib
 from email.mime.text import MIMEText
 from moc_utils import get_absolute_path
-import .moc_exceptions
+from moc_exceptions import BadEmailRecipient
 
 '''
 class BadEmailRecipient(Exception):
@@ -96,7 +96,7 @@ class Message(object):
         # recipients fail and the email cannot be sent. Catch failure of
         # some but not all recipients:
         if len(rejected):
-            raise moc_exceptions.BadEmailRecipient(rejected, msg['Subject'])
+            raise BadEmailRecipient(rejected, msg['Subject'])
 
 
 class TemplateMessage(Message):

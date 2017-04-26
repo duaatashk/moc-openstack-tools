@@ -46,9 +46,8 @@ from moc_utils import get_absolute_path, select_rows
 from quotas import QuotaManager
 from setpass import SetpassClient, random_password
 from config import set_config_file
-from moc_exceptions import InvalidEmailError, 
-                           ItemExistsError, 
-                           ItemNotFoundError
+from moc_exceptions import InvalidEmailError, ItemExistsError
+from moc_exceptions import ItemNotFoundError
 
 '''
  class InvalidEmailError(Exception):
