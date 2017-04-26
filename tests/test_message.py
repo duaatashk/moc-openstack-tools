@@ -11,7 +11,7 @@ PROJECT_DIR = os.path.abspath(os.path.join(TEST_DIR, os.pardir))
 sys.path.insert(0, PROJECT_DIR)
 
 from message import Message, TemplateMessage
-
+import exceptions
 
 def test_template():
     """Test whether template messages are filled in correctly"""
@@ -69,7 +69,6 @@ def test_send(mock_smtp):
 def test_bademail(mock_smtp):
     """Test that BadEmailRecipient is raised cdEmailRecipientorrectly"""
     
-    from exceptions import BadEmailRecipient
     msg_values = {'sender': 'dummy@moc.org',
                   'receiver': 'newuser1@moc.org',
                   'subject': 'Test Message Subject',
@@ -81,7 +80,7 @@ def test_bademail(mock_smtp):
      
     mock_smtp.return_value.sendmail.return_value = rejected_recipients
                                                   
-    with pytest.raises(BadEmailRecipient) as err:
+    with pytest.raises(exceptions.BadEmailRecipient) as err:
         msg.send()
     
     expected_message = ("Message '{}' could not be sent to one or more "
