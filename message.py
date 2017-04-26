@@ -19,16 +19,6 @@ from email.mime.text import MIMEText
 from moc_utils import get_absolute_path
 from moc_exceptions import BadEmailRecipient
 
-'''
-class BadEmailRecipient(Exception):
-    """If sending failed to one or more recipients, but not all of them."""
-    def __init__(self, rdict, subject):
-        self.__name__ = 'BadEmailRecipient'
-        self.rejected = rdict
-        self.message = ("Message '{0}' could not be sent to one or more "
-                        "recipients.").format(subject)
-'''
-
 
 class Message(object):
     """Base class for email messages."""
