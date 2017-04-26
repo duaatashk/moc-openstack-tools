@@ -11,7 +11,6 @@ PROJECT_DIR = os.path.abspath(os.path.join(TEST_DIR, os.pardir))
 sys.path.insert(0, PROJECT_DIR)
 
 from message import Message, TemplateMessage
-from exceptions import BadEmailRecipient
 
 def test_template():
     """Test whether template messages are filled in correctly"""
@@ -67,8 +66,9 @@ def test_send(mock_smtp):
 
 @mock.patch('message.smtplib.SMTP')
 def test_bademail(mock_smtp):
-    """Test that BadEmailRecipient is raised correctly"""
+    """Test that BadEmailRecipient is raised cdEmailRecipientorrectly"""
     
+    from exceptions import BadEmailRecipient
     msg_values = {'sender': 'dummy@moc.org',
                   'receiver': 'newuser1@moc.org',
                   'subject': 'Test Message Subject',
