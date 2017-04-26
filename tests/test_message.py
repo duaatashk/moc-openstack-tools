@@ -81,7 +81,7 @@ def test_bademail(mock_smtp):
      
     mock_smtp.return_value.sendmail.return_value = rejected_recipients
                                                   
-    with pytest.raises(exceptions.BadEmailRecipient) as err:
+    with pytest.raises(BadEmailRecipient) as err:
         msg.send()
     
     expected_message = ("Message '{}' could not be sent to one or more "
