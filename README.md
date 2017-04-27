@@ -19,12 +19,11 @@ These scripts simplify the process of:
 
 New user data is assumed to be in a Google Sheet. The function parse_rows in addusers.py handles parsing the spreadsheet data, you may need to modify it to work with your particular spreadsheet format.
 
-## Usage
-To run it:
+## Setup 
+During initial setup, run these commands to install the required dependencies:
 ```
 # Possibly in a virtual environment 
 $ pip install -r requirements.txt 
-$ python -m
 ```
 
 ## How to use example_settings.ini

@@ -33,7 +33,7 @@ from moc_utils import get_absolute_path, select_rows
 from quotas import QuotaManager
 from message import TemplateMessage
 import spreadsheet
-from moc_exception import ProjectNotFoundError
+from moc_exceptions import ProjectNotFoundError
 
 
 def parse_rows(rows, select_project=None):

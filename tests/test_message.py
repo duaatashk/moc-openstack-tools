@@ -68,7 +68,7 @@ def test_send(mock_smtp):
 
 @mock.patch('message.smtplib.SMTP')
 def test_bademail(mock_smtp):
-    """Test that BadEmailRecipient is raised cdEmailRecipientorrectly"""
+    """Test that BadEmailRecipient is raised correctly"""
     
     msg_values = {'sender': 'dummy@moc.org',
                   'receiver': 'newuser1@moc.org',
